@@ -49,7 +49,7 @@ enum BinType {
  */
 public class DataTypeTest {
 	
-	String host = "127.0.0.1";
+	String host = "172.25.41.21";
 	String port = "3000";
 	String ns = "test";
 	String set = null;
