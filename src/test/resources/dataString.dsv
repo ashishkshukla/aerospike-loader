@@ -1,5 +1,5 @@
 set,key,stringData
-set1,key1,str1
+set1,key1,its_new_string
 set2,key2,str2
 set3,key3,str3
 set4,key4,str4

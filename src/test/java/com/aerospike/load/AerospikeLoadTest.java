@@ -39,9 +39,10 @@ public class AerospikeLoadTest{
 
     @Test
     public void sampleLoad() throws  Exception{
-        String dataFile = rootDir + "dataString.dsv";
+       // String dataFile = rootDir + "dataString.dsv";
+        String dataFile = rootDir + "dataString_keynull.dsv";
         System.out.println("dataFile "+dataFile);
-        AerospikeLoad.main(new String[]{"-h", host,"-p", port,"-n", ns, "-ec", error_count,"-wa", write_action,"-c", "src/test/resources/configString.json", dataFile});
+        AerospikeLoad.main(new String[]{"-h", host,"-p", port,"-n", ns, "-ec", error_count,"-wa", write_action,"-c", "src/test/resources/configString_keynull.json", dataFile});
 
         Assert.assertTrue(true);
     }

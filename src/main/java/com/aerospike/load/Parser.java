@@ -212,8 +212,7 @@ public class Parser {
 		if ((obj = getFromJsonObject(mappingObj, Constants.KEY)) != null) {
 			keyColumnDef = getMetaDefs((JSONObject) obj, Constants.KEY);
 		} else {
-			log.error("\"" + Constants.KEY + "\"  Key is missing in mapping. Mapping: " + mappingObj.toString());
-			return null;
+			log.warn("\"" + Constants.KEY + "\"  Key is missing in mapping. Mapping: " + mappingObj.toString()+" Default UUID Key will be used");
 		}
 
 

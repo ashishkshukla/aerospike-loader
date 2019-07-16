@@ -214,11 +214,14 @@ public class AerospikeLoad implements Runnable {
 			}
 			
 			// Get and validate user roles for client.
+			log.info("Going to create aerospike client");
 			client = getAerospikeClient(cl);
 			if (client == null) {
 				return;
 			}
-			
+			log.info("Connected to Aerospike Server ");
+
+
 			initReadWriteThreadCnt(cl);
 						
 			List<String> dataFileNames = new ArrayList<String>();
@@ -240,6 +243,7 @@ public class AerospikeLoad implements Runnable {
 
 		} catch (Exception e) {
 			log.error(e);
+			e.printStackTrace();
 			if (log.isDebugEnabled()) {
 				e.printStackTrace();
 			}
@@ -257,8 +261,8 @@ public class AerospikeLoad implements Runnable {
 	}
 	
 	private static AerospikeClient getAerospikeClient(CommandLine cl) {
-		ClientPolicy clientPolicy = new ClientPolicy();	
-		
+		ClientPolicy clientPolicy = new ClientPolicy();
+
 		initClientPolicy(cl, clientPolicy);
 		
 		AerospikeClient client = new AerospikeClient(clientPolicy, params.hosts);
@@ -551,9 +555,10 @@ public class AerospikeLoad implements Runnable {
 
 			// KEY
 			if (mappingDef.keyColumnDef == null) {
-				throw new Exception ("Mapping definition without key mapping");	
+				log.warn ("Mapping definition without key mapping. Default UUID Key will be used");
+			}else {
+				updateColumnInfo(mappingDef.keyColumnDef.nameDef, columnNames);
 			}
-			updateColumnInfo(mappingDef.keyColumnDef.nameDef, columnNames);
 
 			// SET
 			if (mappingDef.setColumnDef.staticName == null) {
@@ -637,13 +642,14 @@ public class AerospikeLoad implements Runnable {
 	}
 
 	private static void validateKeyNameInfo(MetaDefinition metadataColDef) throws Exception {
-		
-		if (metadataColDef.nameDef.columnPos < 0 && (metadataColDef.nameDef.columnName == null)) {
-			throw new Exception("Information missing(columnName, columnPos) in config file: " + metadataColDef);
-		}
+		if(metadataColDef!=null) {
+				if (metadataColDef.nameDef.columnPos < 0 && (metadataColDef.nameDef.columnName == null)) {
+					throw new Exception("Information missing(columnName, columnPos) in config file: " + metadataColDef);
+				}
 
-		if (metadataColDef.nameDef.srcType == null) {
-			throw new Exception("Source data type is not properly mentioned: " + metadataColDef);
+				if (metadataColDef.nameDef.srcType == null) {
+					throw new Exception("Source data type is not properly mentioned: " + metadataColDef);
+				}
 		}
 	}
 
